@@ -1,0 +1,44 @@
+/* Styles for Admin Bookings list */
+.admin-page-wrap{max-width:1100px;margin:30px auto;padding:20px;font-family:Inter,Arial,Helvetica,sans-serif}
+.admin-header h1{margin:0 0 6px;font-size:28px}
+.admin-header .muted{color:#666;margin:0 0 18px}
+
+.booking-list{display:grid;grid-template-columns:1fr;gap:16px}
+.booking-card{background:#fff;border-radius:10px;padding:14px;border:1px solid rgba(0,0,0,0.06);box-shadow:0 6px 20px rgba(11,20,40,0.04);display:flex;flex-direction:column}
+
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.card-header .meta{display:flex;flex-direction:column}
+.card-header .meta .id{font-weight:800}
+.card-header .meta .date{font-size:13px;color:#666}
+.card-header .status .badge{margin-left:8px;padding:6px 8px;border-radius:6px;font-weight:700;font-size:12px}
+
+.badge{background:#eee;color:#222}
+.status-pending{background:#fff4cf;color:#856404}
+.status-confirmed{background:#e6ffef;color:#0b8a45}
+.status-completed{background:#e6ffef;color:#0b8a45}
+.status-cancelled{background:#fff0f6;color:#b02a37}
+.pay-pending{background:#fff4cf;color:#856404}
+.pay-paid{background:#e6ffef;color:#0b8a45}
+.pay-refunded{background:#eef2ff;color:#223}
+
+.card-body{display:flex;gap:16px}
+.card-body .left{flex:1}
+.card-body .right{width:200px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.field{margin-bottom:8px;color:#333}
+.field strong{display:inline-block;width:100px;color:#222}
+
+.screenshot{max-width:180px;height:auto;border-radius:8px;border:1px solid #eee;display:block}
+.no-screenshot{color:#999;font-size:13px}
+
+.actions{display:flex;gap:8px}
+.btn{display:inline-block;padding:8px 10px;border-radius:6px;background:#4a6cf7;color:#fff;text-decoration:none;font-weight:700;border:1px solid rgba(0,0,0,0.05)}
+.btn.danger{background:#d9534f}
+
+.empty{text-align:center;padding:40px;color:#666}
+
+/* Responsive: stack on small screens */
+@media (max-width:700px){
+  .card-body{flex-direction:column}
+  .card-body .right{width:100%;align-items:flex-start}
+  .field strong{width:110px}
+}

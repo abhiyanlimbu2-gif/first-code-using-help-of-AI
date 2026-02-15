@@ -1,0 +1,366 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --white-bg: #ffffff;
+    --light-gray: #f8f9fa;
+    --green-accent: #25D366;
+    --red-accent: #e74c3c;
+    --dark-text: #1a1a1a;
+    --gray-text: #666666;
+    --border-color: #e0e0e0;
+    
+    --font-heading: 'Poppins', sans-serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--white-bg);
+    font-family: var(--font-body);
+    color: var(--dark-text);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    background: var(--white-bg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--dark-text);
+    font-family: var(--font-heading);
+}
+
+.logo span {
+    color: var(--green-accent);
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+.nav-links a {
+    color: var(--gray-text);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: var(--dark-text);
+}
+
+.btn-book-top {
+    background: var(--green-accent);
+    border: none;
+    padding: 12px 28px;
+    border-radius: 25px;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.btn-book-top:hover {
+    background: #20ba5a;
+    transform: translateY(-2px);
+}
+
+/* Product Section */
+.product-section {
+    padding: 60px 5%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.product-container {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 80px;
+    align-items: start;
+}
+
+/* Product Image */
+.product-image {
+    background: white;
+    padding: 40px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.product-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Product Info */
+.product-info h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--dark-text);
+    margin-bottom: 20px;
+    font-family: var(--font-heading);
+}
+
+.social-icons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.social-icons a {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray-text);
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.social-icons a:hover {
+    background: var(--green-accent);
+    color: white;
+    border-color: var(--green-accent);
+}
+
+.price {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--green-accent);
+    margin-bottom: 25px;
+    font-family: var(--font-heading);
+}
+
+.product-info h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--blue-accent);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.description {
+    color: var(--dark-text);
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+.description em {
+    font-style: italic;
+}
+
+.gallery-link {
+    color: var(--dark-text);
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+}
+
+.gallery-link a {
+    color: var(--red-accent);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.gallery-link a:hover {
+    text-decoration: underline;
+}
+
+.product-info h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--dark-text);
+    margin: 30px 0 15px 0;
+}
+
+/* Specs Table */
+.specs-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+.specs-table tr {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.specs-table td {
+    padding: 15px 10px;
+    font-size: 0.95rem;
+}
+
+.specs-table td:first-child {
+    color: var(--gray-text);
+    font-weight: 500;
+}
+
+.specs-table td:last-child {
+    color: var(--dark-text);
+    font-weight: 600;
+    text-align: right;
+}
+
+/* Booking Button */
+.booking-button {
+    margin-top: 30px;
+}
+
+.booking-button a {
+    text-decoration: none;
+}
+
+.btn-book {
+    background: var(--green-accent);
+    color: white;
+    border: none;
+    padding: 16px 35px;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+}
+
+.btn-book:hover {
+    background: #20ba5a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+}
+
+.btn-book i {
+    font-size: 1.2rem;
+}
+
+/* Footer */
+.footer {
+    background: var(--dark-text);
+    color: white;
+    padding: 50px 5% 20px;
+    margin-top: 80px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-bottom: 30px;
+}
+
+.footer-col h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.footer-col h3 span {
+    color: var(--green-accent);
+}
+
+.footer-col h4 {
+    margin-bottom: 15px;
+}
+
+.footer-col ul {
+    list-style: none;
+}
+
+.footer-col ul li {
+    margin-bottom: 10px;
+}
+
+.footer-col ul li a {
+    color: #ccc;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-col ul li a:hover {
+    color: white;
+}
+
+.footer-col p {
+    color: #ccc;
+    margin-bottom: 10px;
+}
+
+.footer-col i {
+    color: var(--green-accent);
+    margin-right: 8px;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #333;
+    color: #ccc;
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+    .product-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .product-info h1 {
+        font-size: 1.75rem;
+    }
+    
+    .price {
+        font-size: 2rem;
+    }
+    
+    .nav-links {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .product-image {
+        padding: 20px;
+    }
+    
+    .product-info h1 {
+        font-size: 1.5rem;
+    }
+    
+    .price {
+        font-size: 1.75rem;
+    }
+    
+    .product-info h2 {
+        font-size: 1.2rem;
+    }
+}

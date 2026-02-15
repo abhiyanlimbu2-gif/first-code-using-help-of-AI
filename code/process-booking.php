@@ -1,0 +1,253 @@
+<?php
+session_start();
+require_once 'config.php';
+
+// Debug log helper (temporary)
+$debugLog = __DIR__ . '/storage/booking_debug.log';
+
+// Log incoming request for troubleshooting (remove after debug)
+file_put_contents($debugLog, "[".date('c')."] process-booking POST: ".json_encode($_POST).PHP_EOL, FILE_APPEND);
+
+// Detect AJAX requests (fetch/X-Requested-With) or explicit ajax flag in POST
+$isAjax = (!empty($_POST['ajax']) || (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest'));
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    if ($isAjax) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'error' => 'Invalid request method']);
+        exit();
+    }
+
+    // Use absolute paths to avoid relative-path resolution issues
+    header("Location: /project/user/packages.php");
+    exit();
+}
+
+$conn = getDBConnection();
+
+// Sanitize input
+$bike_id = isset($_POST['bike_id']) ? intval($_POST['bike_id']) : 0;
+$customer_name = trim($_POST['customer_name'] ?? '');
+$customer_email = trim($_POST['customer_email'] ?? '');
+$customer_phone = trim($_POST['customer_phone'] ?? '');
+$license_number = trim($_POST['license_number'] ?? '');
+$start_date = $_POST['start_date'] ?? '';
+$end_date = $_POST['end_date'] ?? '';
+$pickup_location = trim($_POST['pickup_location'] ?? 'Rental Office');
+$drop_location = trim($_POST['drop_location'] ?? 'Rental Office');
+$total_days = isset($_POST['total_days']) ? intval($_POST['total_days']) : 1;
+$total_price = isset($_POST['total_price']) ? floatval($_POST['total_price']) : 0.00;
+
+$errors = [];
+
+// Validation (same as before)
+if ($bike_id <= 0) $errors[] = "Invalid bike selection.";
+if (empty($customer_name)) $errors[] = "Customer name is required.";
+if (empty($customer_email) || !filter_var($customer_email, FILTER_VALIDATE_EMAIL)) $errors[] = "Valid email address is required.";
+if (empty($customer_phone)) $errors[] = "Phone number is required.";
+if (empty($license_number)) $errors[] = "Driver's license number is required.";
+if (empty($start_date) || empty($end_date)) $errors[] = "Both pickup and drop-off dates are required.";
+
+if (!empty($start_date) && !empty($end_date)) {
+    $start = strtotime($start_date);
+    $end = strtotime($end_date);
+    $today = strtotime(date('Y-m-d'));
+    if ($start < $today) $errors[] = "Pickup date cannot be in the past.";
+    if ($end <= $start) $errors[] = "Drop-off date must be after pickup date.";
+}
+
+if ($total_days <= 0) $errors[] = "Invalid rental duration.";
+if ($total_price <= 0) $errors[] = "Invalid total price.";
+
+// Additional server-side checks: phone format, license format, recalculate days/price to prevent tampering
+if (!empty($customer_phone) && function_exists('validatePhone') && !validatePhone(preg_replace('/\D+/', '', $customer_phone))) {
+    $errors[] = "Enter a valid 10-digit Nepal phone number.";
+}
+if (!empty($license_number) && !preg_match('/^[A-Za-z0-9\s\-]{4,30}$/', $license_number)) {
+    $errors[] = "License number must be 4-30 alphanumeric characters.";
+}
+
+if (!empty($start_date) && !empty($end_date)) {
+    $s = strtotime($start_date);
+    $e = strtotime($end_date);
+    $calculated_days = max(1, (int)ceil(($e - $s) / (24*60*60)));
+    if ($calculated_days !== (int)$total_days) {
+        $errors[] = "Rental duration mismatch (dates vs days).";
+    }
+}
+
+// Verify total price using server-side bike price (protect against tampered POST)
+if ($bike_id > 0) {
+    $priceCheckStmt = $conn->prepare("SELECT price_per_day FROM bikes WHERE bike_id = ? LIMIT 1");
+    $priceCheckStmt->bind_param("i", $bike_id);
+    $priceCheckStmt->execute();
+    $resP = $priceCheckStmt->get_result();
+    $rowP = $resP->fetch_assoc();
+    $priceCheckStmt->close();
+    if ($rowP) {
+        $expected_price = round($rowP['price_per_day'] * max(1, (int)$total_days), 2);
+        if (abs($expected_price - $total_price) > 0.01) {
+            $errors[] = "Total price does not match server calculation.";
+        }
+    }
+}
+
+if (!empty($errors)) {
+    $_SESSION['booking_error'] = implode(" ", $errors);
+    if ($isAjax) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'error' => implode(' ', $errors)]);
+        exit();
+    }
+    header("Location: /project/user/bike-details.php?bike_id=" . $bike_id);
+    exit();
+}
+
+try {
+    // Verify bike exists & availability
+    $stmt = $conn->prepare("SELECT bike_id, bike_name, availability_status, price_per_day FROM bikes WHERE bike_id = ? FOR UPDATE");
+    $stmt->bind_param("i", $bike_id);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $bike = $res->fetch_assoc();
+    $stmt->close();
+
+    if (!$bike) {
+        $_SESSION['booking_error'] = "Selected bike not found.";
+        if ($isAjax) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'error' => 'Selected bike not found.']);
+            exit();
+        }
+        header("Location: /project/user/packages.php");
+        exit();
+    }
+
+    if ($bike['availability_status'] !== 'available') {
+        $_SESSION['booking_error'] = "This bike is not currently available for booking.";
+        if ($isAjax) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'error' => 'This bike is not currently available for booking.']);
+            exit();
+        }
+        header("Location: /project/user/bike-details.php?bike_id=" . $bike_id);
+        exit();
+    }
+
+    // Verify price
+    $calculated_price = $bike['price_per_day'] * $total_days;
+    if (abs($calculated_price - $total_price) > 0.01) {
+        $_SESSION['booking_error'] = "Price calculation mismatch. Please try again.";
+        if ($isAjax) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'error' => 'Price calculation mismatch.']);
+            exit();
+        }
+        header("Location: /project/user/bike-details.php?bike_id=" . $bike_id);
+        exit();
+    }
+
+    // Check overlapping bookings
+    $stmt = $conn->prepare("
+        SELECT booking_id 
+        FROM bookings 
+        WHERE bike_id = ? 
+        AND booking_status NOT IN ('cancelled', 'completed')
+        AND (
+            (start_date <= ? AND end_date >= ?) OR
+            (start_date <= ? AND end_date >= ?) OR
+            (start_date >= ? AND end_date <= ?)
+        )
+    ");
+    $stmt->bind_param("issssss", $bike_id, $start_date, $start_date, $end_date, $end_date, $start_date, $end_date);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+
+    if ($result->num_rows > 0) {
+        $_SESSION['booking_error'] = "This bike is already booked for the selected dates. Please choose different dates.";
+        if ($isAjax) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'error' => 'This bike is already booked for the selected dates.']);
+            exit();
+        }
+        header("Location: /project/user/bike-details.php?bike_id=" . $bike_id);
+        exit();
+    }
+
+    // Insert booking inside transaction
+    $conn->begin_transaction();
+
+    $booking_status = 'pending';
+    $payment_status = 'pending';
+
+    $stmt = $conn->prepare("
+        INSERT INTO bookings (
+            bike_id, customer_name, customer_email, customer_phone, license_number,
+            start_date, end_date, pickup_location, drop_location,
+            total_days, total_price, booking_status, payment_status
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ");
+
+    $stmt->bind_param(
+        "isssssssidsss",
+        $bike_id,
+        $customer_name,
+        $customer_email,
+        $customer_phone,
+        $license_number,
+        $start_date,
+        $end_date,
+        $pickup_location,
+        $drop_location,
+        $total_days,
+        $total_price,
+        $booking_status,
+        $payment_status
+    );
+
+    if (!$stmt->execute()) {
+        throw new Exception("DB Insert Error: " . $stmt->error);
+    }
+
+    $booking_id = $stmt->insert_id;
+    $stmt->close();
+
+    // Mark bike as rented to prevent double-bookings (optional behavior)
+    $upd = $conn->prepare("UPDATE bikes SET availability_status = 'rented' WHERE bike_id = ?");
+    $upd->bind_param("i", $bike_id);
+    if (!$upd->execute()) {
+        throw new Exception("Failed to update bike status: " . $conn->error);
+    }
+    $upd->close();
+
+    $conn->commit();
+
+    $_SESSION['booking_success'] = "Booking successful! Your booking ID is #" . $booking_id . ". We will contact you soon.";
+
+    // Log success and respond
+    file_put_contents($debugLog, "[".date('c')."] Booking created: id=" . $booking_id . " redirect=/project/payment.php?booking_id=" . $booking_id . PHP_EOL, FILE_APPEND);
+
+    if ($isAjax) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => true, 'booking_id' => $booking_id, 'redirect' => '/project/payment.php?booking_id=' . $booking_id]);
+        exit();
+    }
+
+    header("Location: /project/payment.php?booking_id=" . $booking_id);
+    exit();
+
+} catch (Exception $ex) {
+    // Log and rollback
+    $conn->rollback();
+    $msg = $ex->getMessage();
+    file_put_contents($debugLog, "[".date('c')."] ERROR: " . $msg . PHP_EOL, FILE_APPEND);
+    $_SESSION['booking_error'] = "Failed to create booking. Please try again. Error: " . htmlspecialchars($msg);
+    if ($isAjax) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'error' => 'Failed to create booking: ' . $msg]);
+        exit();
+    }
+    header("Location: /project/user/bike-details.php?bike_id=" . $bike_id);
+    exit();
+}

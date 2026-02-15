@@ -1,0 +1,70 @@
+$ts = (Get-Date).ToString('yyyyMMddHHmmss')
+$src = "config.php"
+$bak = "code/config.php.bak.$ts"
+
+if (Test-Path $src) {
+  Copy-Item $src $bak -Force
+  Write-Host "Backed up $src -> $bak"
+} else {
+  Write-Host "Warning: $src not found. Creating new file."
+}
+
+@'
+<?php
+
+define('DB_HOST','localhost'); // consider using '127.0.0.1' if you see socket/TCP issues
+define('DB_USER','root');
+define('DB_PASS','');
+define('DB_NAME','meroride_db'); // change to your DB name
+
+if (session_status() === PHP_SESSION_NONE) session_start();
+
+function getDBConnection() {
+    static $conn = null;
+    if ($conn === null) {
+        $init = mysqli_init();
+        // short connect timeout (seconds)
+        mysqli_options($init, MYSQLI_OPT_CONNECT_TIMEOUT, 3);
+
+        // Suppress warnings and handle failure explicitly
+        if (!@$init->real_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME)) {
+            error_log('DB connection error: ' . mysqli_connect_error());
+            http_response_code(503);
+            // Friendly message for users, and fail fast instead of hanging
+            die('Service temporarily unavailable (DB connection). Please try again later.');
+        }
+
+        $init->set_charset('utf8mb4');
+        $conn = $init;
+    }
+    return $conn;
+}
+
+function requireLogin() {
+    if (empty($_SESSION['user_id'])) {
+        header('Location: ../login.php');
+        exit;
+    }
+}
+
+function requireAdmin() {
+    if (empty($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
+        if (stripos($_SERVER['PHP_SELF'], '/Admin/') !== false || stripos($_SERVER['PHP_SELF'], '/admin/') !== false) {
+            header('Location: login.php');
+        } else {
+            header('Location: admin/login.php');
+        }
+        exit;
+    }
+}
+
+/* Utilities */
+function sanitize($data) { return htmlspecialchars(stripslashes(trim($data))); }
+function validateEmail($email) { return filter_var($email, FILTER_VALIDATE_EMAIL); }
+function validatePhone($phone) { return preg_match('/^[0-9]{10}$/', $phone); }
+function hashPassword($password) { return password_hash($password, PASSWORD_DEFAULT); }
+function verifyPassword($password, $hash) { return password_verify($password, $hash); }
+?>
+'@ | Set-Content -Path $src -Encoding UTF8 -Force
+
+Write-Host "Wrote patched $src"

@@ -1,0 +1,116 @@
+/* Site-wide responsive utilities and overrides (mobile-first)
+   Applied after main `style.css` so these rules take precedence where needed.
+   Breakpoints: 480px (small), 768px (tablet), 1024px (laptop)
+*/
+
+/* Make media (images, videos) always fluid */
+img, video, .card img, .bike-img img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Make cards and containers fluid on small screens */
+.container, .card, .form-container, .price-table-wrapper {
+  width: 100%;
+  padding-left: 16px;
+  padding-right: 16px;
+  box-sizing: border-box;
+}
+
+/* Ensure site header nav wraps instead of overflowing */
+.nav, .navbar {
+  align-items: center;
+}
+.nav .nav-links, .navbar .nav-links {
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Forms: larger touch targets on mobile */
+.form-group input, .form-group select, .form-group textarea, .submit-btn, .btn-submit, .btn-book-top {
+  min-height: 44px;
+  font-size: 1rem;
+}
+
+/* Make tables horizontally scrollable on very small screens (already safe) */
+.price-table-wrapper, .table-container {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* WhatsApp float smaller on phones */
+.whatsapp-float {
+  padding: 10px 14px;
+  right: 14px;
+  bottom: 18px;
+  border-radius: 40px;
+  font-size: 14px;
+}
+
+/* Utility: stacked label/value pairs for compact lists */
+.field { display: flex; gap: 12px; align-items: baseline; }
+.field .label { min-width: 120px; font-weight: 600; color: #444; }
+.field .value { flex: 1; color: #666; }
+
+/* Global type scaling for small screens */
+@media (max-width: 1024px) {
+  .main-title { font-size: 2.8rem; }
+  .section-title { font-size: 2rem; }
+}
+
+@media (max-width: 768px) {
+  .container { padding: 24px 14px; }
+  .hero { padding: 30px 14px; }
+
+  /* Nav: vertical stacking for small screens (no JS required) */
+  .nav .nav-links, .navbar .nav-links {
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
+  .nav .nav-links a, .navbar .nav-links a { width: 100%; padding: 10px 12px; border-radius: 8px; }
+
+  /* Stack dashboard panels */
+  .stats-grid { grid-template-columns: 1fr; }
+  .summary-top { flex-direction: row; gap: 12px; }
+
+  /* Make sidebar compact (admin) — admin-specific already exists but keep safe fallback */
+  .sidebar { width: 70px; }
+  .main-content { margin-left: 70px; }
+
+  /* Forms and cards full-width */
+  .card, .form-container { padding: 18px; }
+}
+
+@media (max-width: 480px) {
+  body { font-size: 15px; }
+  .main-title { font-size: 2rem; }
+  .nav .nav-links a, .navbar .nav-links a { padding: 10px; font-size: 0.95rem; }
+  .summary-top img { width: 84px; height: 60px; }
+  .price-row { font-size: 0.95rem; }
+  .total-amount { font-size: 1.25rem; }
+  .whatsapp-float { font-size: 13px; padding: 9px 12px; }
+
+  /* Make input controls bigger for touch */
+  .form-group input, .form-group select, .form-group textarea { padding: 12px; }
+
+  /* Reduce large paddings on cards */
+  .card { padding: 14px; }
+
+  /* Responsive table: keep horizontal scroll but reduce padding */
+  .bike-price-table th, .bike-price-table td { padding: 8px 6px; }
+}
+
+/* Admin-specific responsive tweaks (safe overrides) */
+@media (max-width: 768px) {
+  .admin-container { flex-direction: column; }
+  .sidebar { position: relative; width: 100%; height: auto; display: flex; padding: 10px 16px; }
+  .main-content { margin-left: 0; padding: 16px; }
+}
+
+/* Handy utility classes */
+.u-hidden-sm { display: none !important; }
+@media (min-width: 769px) { .u-hidden-sm { display: inline !important; } }
+
+/* Small-screen helpers to avoid overflow from long text */
+.break-word { word-break: break-word; overflow-wrap: break-word; }

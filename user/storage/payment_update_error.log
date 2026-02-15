@@ -1,0 +1,7 @@
+[2026-02-11T18:56:56+01:00] Payment update failed: Unknown column 'transaction_id' in 'field list'
+[2026-02-12T07:06:59+01:00] Payment update failed: Unknown column 'transaction_id' in 'field list'
+[2026-02-12T19:54:27+01:00] Payment update failed: Unknown column 'transaction_id' in 'field list'
+[2026-02-12T20:02:03+01:00] Payment update failed: Unknown column 'transaction_id' in 'field list'
+[2026-02-12T20:05:28+01:00] Payment update failed: Unknown column 'transaction_id' in 'field list'
+[2026-02-12T20:08:35+01:00] Payment update failed: Unknown column 'transaction_id' in 'field list'
+[2026-02-12T20:08:35+01:00] Payment update failed: Unknown column 'transaction_id' in 'field list'

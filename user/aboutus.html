@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>About Us | MeroRide</title>
+  <link rel="stylesheet" href="../code/css/aboutus.css">
+  <!-- Font Awesome for social icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <div class="logo">Hamro <span>Ride</span></div>
+      <ul class="nav-links">
+        
+        <li><a href="packages.php">Packages</a></li>
+        <li><a href="aboutus.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        
+      </ul>
+
+      <!-- User face icon + dropdown -->
+      <div class="user-area" id="userArea">
+        <button id="userBtn" class="user-btn" aria-haspopup="true" aria-expanded="false">
+         
+          <span class="user-name"><?php echo htmlspecialchars($_SESSION['user_name'] ?? ''); ?></span>
+          <i class="fas fa-caret-down"></i>
+        </button>
+
+        <div id="userMenu" class="user-menu" role="menu" aria-hidden="true">
+          <a href="userdashboard.php">Dashboard</a>
+          <a href="mybooking.php">My Bookings</a>
+          <a href="./userlogout.php">Sign out</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Header (same style as Contact Us) -->
+  <header class="header">
+    <h1><span class="mero">Mero</span><span class="ride">Ride</span></h1>
+    <p>Bike Renting System</p>
+  </header>
+
+  <!-- Banner -->
+  <section class="about-banner">
+    <h1>About MeroRide</h1>
+    <p>A simple platform for bike rentals and basic management.</p>
+  </section>
+
+  <!-- About Section -->
+  <section class="about-section">
+    <div class="about-text">
+      <h2>Who We Are</h2>
+      <p>
+        MeroRide is a bike renting system developed to provide a basic and
+        easy-to-use platform for renting bikes. The system focuses on
+        simplicity and accessibility rather than complex features.
+      </p>
+
+      <h2>What We Do</h2>
+      <p>
+        MeroRide allows users to view available bikes and rent them for a
+        specific period of time. It also provides basic administrative
+        functionality to manage bike and user information.
+      </p>
+
+      <h2>Our Approach</h2>
+      <p>
+        We aim to keep the system straightforward and practical. MeroRide is
+        designed as a foundational platform that can be improved and expanded
+        with additional features in the future.
+      </p>
+    </div>
+
+    <div class="about-cards">
+      <div class="card">
+        <h3>Simple Design</h3>
+        <p>A clean and minimal interface that is easy to understand and use.</p>
+      </div>
+
+      <div class="card">
+        <h3>Basic Rental Flow</h3>
+        <p>Users can rent bikes using a simple and clear process.</p>
+      </div>
+
+      <div class="card">
+        <h3>Secure Platform</h3>
+        <p>User data and rental information are managed securely.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social Icons (same style as Contact Us) -->
+  <section class="social-icons">
+    <a href="#" class="icon-circle"><i class="fab fa-facebook-f"></i></a>
+    <a href="#" class="icon-circle"><i class="fab fa-twitter"></i></a>
+    <a href="#" class="icon-circle"><i class="fab fa-instagram"></i></a>
+    <a href="#" class="icon-circle"><i class="fab fa-linkedin-in"></i></a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Â© 2026 MeroRide. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

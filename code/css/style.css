@@ -1,0 +1,352 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --white-bg: #ffffff;
+    --light-gray: #f8f9fa;
+    --green-accent: #25D366;
+    --red-accent: #e74c3c;
+    --dark-text: #1a1a1a;
+    --gray-text: #666666;
+    --border-color: #e0e0e0;
+    
+    --font-heading: 'Poppins', sans-serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--white-bg);
+    font-family: var(--font-body);
+    color: var(--dark-text);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* Typography */
+h1, h2, h3, .logo {
+    font-family: var(--font-heading);
+}
+
+.main-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    color: var(--dark-text);
+}
+
+.main-title span {
+    color: var(--green-accent);
+    border-left: 4px solid var(--green-accent);
+    padding-left: 15px;
+}
+
+.subtitle {
+    color: var(--gray-text);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 600px;
+    margin-bottom: 30px;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    background: var(--white-bg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--dark-text);
+}
+
+.logo span {
+    color: var(--green-accent);
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+.nav-links a {
+    color: var(--gray-text);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: var(--dark-text);
+}
+
+.btn-book-top {
+    background: var(--green-accent);
+    border: none;
+    padding: 12px 28px;
+    border-radius: 25px;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: lowercase;
+    transition: all 0.3s ease;
+}
+
+.btn-book-top:hover {
+    background: #20ba5a;
+    transform: translateY(-2px);
+}
+
+/* Hero Section */
+.hero {
+    padding: 60px 5%;
+    background: var(--white-bg);
+}
+
+.hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hero-btns {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.btn-whatsapp {
+    background: var(--green-accent);
+    border: none;
+    padding: 15px 35px;
+    border-radius: 30px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+.btn-whatsapp:hover {
+    background: #20ba5a;
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid var(--border-color);
+    padding: 15px 35px;
+    border-radius: 30px;
+    color: var(--dark-text);
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+    border-color: var(--dark-text);
+    background: var(--light-gray);
+}
+
+/* Trust Badges */
+.trust-badges {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--gray-text);
+    font-size: 14px;
+}
+
+.badge i {
+    color: var(--green-accent);
+}
+
+/* Section Title */
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--red-accent);
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    letter-spacing: -0.5px;
+}
+
+/* Table Wrapper - Centered like in the image */
+.price-table-wrapper {
+    background: var(--white-bg);
+    border-radius: 0;
+    margin: 40px auto;
+    max-width: 1000px;
+    overflow-x: auto;
+}
+
+/* Table Styles - Matching the reference image */
+.bike-price-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1rem;
+    background: white;
+}
+
+.bike-price-table thead {
+    background: white;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.bike-price-table th {
+    padding: 15px 20px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--dark-text);
+    font-size: 0.95rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.bike-price-table tbody tr {
+    border-bottom: 1px solid var(--border-color);
+    transition: background 0.2s ease;
+}
+
+.bike-price-table tbody tr:hover {
+    background: var(--light-gray);
+}
+
+.bike-price-table tbody tr:last-child {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.bike-price-table td {
+    padding: 15px 20px;
+    color: var(--dark-text);
+    font-size: 0.95rem;
+}
+
+.bike-price-table td:first-child {
+    font-weight: 600;
+    color: var(--gray-text);
+    text-align: center;
+}
+
+.bike-price-table a {
+    color: var(--red-accent);
+    text-decoration: underline;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.bike-price-table a:hover {
+    color: #c0392b;
+}
+
+/* WhatsApp Floating Button */
+.whatsapp-float {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--green-accent);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.whatsapp-float:hover {
+    background: #20ba5a;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 2.5rem;
+    }
+    
+    .navbar {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .nav-links {
+        gap: 15px;
+    }
+    
+    .hero-btns {
+        flex-direction: column;
+    }
+    
+    .btn-whatsapp,
+    .btn-outline {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .bike-price-table {
+        font-size: 0.85rem;
+    }
+    
+    .bike-price-table th,
+    .bike-price-table td {
+        padding: 12px 10px;
+    }
+    
+    .bike-price-table th {
+        font-size: 0.8rem;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    .trust-badges {
+        gap: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .bike-price-table th,
+    .bike-price-table td {
+        padding: 10px 5px;
+        font-size: 0.75rem;
+    }
+}
+
+/* Import responsive overrides (loaded last) */
+@import url('responsive.css');

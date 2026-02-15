@@ -1,0 +1,28 @@
+define('DB_NAME', 'project code');  // Check if it has a space or underscore
+function sanitize($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+
+// Validate email
+function validateEmail($email) {
+    return filter_var($email, FILTER_VALIDATE_EMAIL);
+}
+
+// Validate phone
+function validatePhone($phone) {
+    return preg_match('/^[0-9]{10}$/', $phone);
+}
+
+// Hash password
+function hashPassword($password) {
+    return password_hash($password, PASSWORD_DEFAULT);
+}
+
+// Verify password
+function verifyPassword($password, $hash) {
+    return password_verify($password, $hash);
+}
+?>

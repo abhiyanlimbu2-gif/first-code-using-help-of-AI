@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Contact Us | MeroRide</title>
+  <link rel="stylesheet" href="../code/css/contact.css">
+  <!-- Font Awesome for social icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<header class="site-header">
+    <nav class="nav">
+      <div class="logo">Hamro <span>Ride</span></div>
+      <ul class="nav-links">
+        
+        <li><a href="packages.php">Packages</a></li>
+        <li><a href="aboutus.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        
+      </ul>
+
+      <!-- User face icon + dropdown -->
+      <div class="user-area" id="userArea">
+        <button id="userBtn" class="user-btn" aria-haspopup="true" aria-expanded="false">
+         
+          <span class="user-name"><?php echo htmlspecialchars($_SESSION['user_name'] ?? ''); ?></span>
+          <i class="fas fa-caret-down"></i>
+        </button>
+
+        <div id="userMenu" class="user-menu" role="menu" aria-hidden="true">
+          <a href="userdashboard.php">Dashboard</a>
+          <a href="mybooking.php">My Bookings</a>
+          <a href="./userlogout.php">Sign out</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <!-- Header -->
+  <header class="header">
+    <h1><span class="mero">Mero</span><span class="ride">Ride</span></h1>
+    <p>Bike Renting System</p>
+
+  </header>
+
+  <!-- Main Content -->
+  <section class="contact-section">
+    <h2>Contact Us</h2>
+    <p class="desc">
+      You can reach MeroRide through the following contact details.
+      Our team is available to assist you during working hours.
+    </p>
+
+    <div class="contact-details">
+      <div class="detail-box">
+        <h3>Office Address</h3>
+        <p>Kathmandu, Nepal</p>
+      </div>
+
+      <div class="detail-box">
+        <h3>Phone</h3>
+        <p>+977-987654321</p>
+      </div>
+
+      <div class="detail-box">
+        <h3>Email</h3>
+        <p>support@meroride.com</p>
+      </div>
+
+      <div class="detail-box">
+        <h3>Working Hours</h3>
+        <p>Sunday – Friday<br>9:00 AM – 6:00 PM</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social Icons -->
+  <section class="social-icons">
+    <a href="#" class="icon-circle"><i class="fab fa-facebook-f"></i></a>
+    <a href="#" class="icon-circle"><i class="fab fa-twitter"></i></a>
+    <a href="#" class="icon-circle"><i class="fab fa-instagram"></i></a>
+    <a href="#" class="icon-circle"><i class="fab fa-linkedin-in"></i></a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2026 MeroRide. All Rights Reserved.</p>
+  </footer>
+
+</body>
+</html>
